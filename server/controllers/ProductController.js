@@ -3,7 +3,7 @@ const Product = require('../models/product')
 class ProductController {
 
     static create (req,res) {    
-        Product.create(req.body)
+        Product.create({...req.body})
         .then(data =>{    
             res.status(201).json(data)
         })

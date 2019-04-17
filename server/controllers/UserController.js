@@ -1,5 +1,6 @@
 const User = require('../models/user')
 const bcrypt = require('bcryptjs')
+const Cart = require('../models/cart')
 const jwt = require('jsonwebtoken')
 
 class UserController {
@@ -12,7 +13,8 @@ class UserController {
             role  : req.body.role,
             password : req.body.password
         })
-        .then(data =>{           
+        .then(data =>{   
+            return Cart.create({})    
             res.status(201).json(data)
         })
         .catch(err => {
@@ -44,14 +46,14 @@ class UserController {
                     
                     res.status(400).json({ msg: 'Email/Password invalid' })
                  } else {
-                    const { name, email, _id } = found
+                    const { name, email, _id, role } = found
                     let token = jwt.sign({
                         id: _id,
                         email,
                         name
                     }, process.env.JWT_SECRET);
                     // console.log(token, 'dpt tokeeen')
-                    res.status(200).json({ token, _id, name, email })
+                    res.status(200).json({ token, _id, name, email, role })
                  }
             }
         })

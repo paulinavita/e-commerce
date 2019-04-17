@@ -16,7 +16,7 @@ before(function (done) {
         name: 'Paulina',
         address: 'Radalhahahahahhahahahaha',
         email: "pauline@gmail.com",
-        role: "customer",
+        role: "admin",
         password: "123456"
     }
     
@@ -38,7 +38,7 @@ before(function (done) {
 after(function (done) {   
     Product.deleteMany({})
     .then(() => {
-        done()
+       
     })
     .catch(err => {
         done()
@@ -53,6 +53,7 @@ after(function (done) {
         done()
         
     })
+
 
 })
 
@@ -92,7 +93,6 @@ describe('Product end point test', function () {
                     name: 'Buku',
                     image: 'http://imageurl.buku.com',
                     stock: 10,
-                    userId: '5cb44796a59db34703243be9',
                     description : 'Bukubukubu'
                 }
                 chai
@@ -106,7 +106,7 @@ describe('Product end point test', function () {
                         expect(res.body).to.have.property('_id')
                         expect(res.body).to.have.property('name')
                         expect(res.body).to.have.property('image')
-                        expect(res.body).to.have.property('userId')
+
                         expect(res.body).to.have.property('stock')
                         expect(res.body).to.have.property('description')
                         productId = res.body._id
@@ -125,7 +125,6 @@ describe('Product end point test', function () {
                     name: 'Roti',
                     image: 'http://imageurl.roti.com',
                     stock: 10,
-                    userId: '5cb44796a59db34703243be9',
                     description : 'Rooooti'
                 }
                 it('User not logged in; should return status 401', function (done) {
@@ -147,7 +146,6 @@ describe('Product end point test', function () {
                         name: 'Roti',
                         image: 'http://imageurl.roti.com',
                         stock: 10,
-                        userId: '5cb44796a59db34703243be9',
                         description : 'Rooooti'
                     }
                     chai
@@ -170,7 +168,6 @@ describe('Product end point test', function () {
                         name: 'Roti',
                         image: 'http://imageurl.roti.com',
                         stock: 10,
-                        userId: '5cb44796a59db34703243be9',
                         description : 'Rooooti'
                     }
                     chai
@@ -192,7 +189,6 @@ describe('Product end point test', function () {
                         name: 'Roti',
                         image: 'http://imageurl.roti.com',
                         stock: -10,
-                        userId: '5cb44796a59db34703243be9',
                         description : 'Rooooti'
                     }
                     chai
@@ -214,7 +210,6 @@ describe('Product end point test', function () {
                         name: 'Roti',
                         image: 'http://imageurl.roti.com',
                         stock: 'aaaa',
-                        userId: '5cb44796a59db34703243be9',
                         description : 'Rooooti'
                     }
                     chai
@@ -236,7 +231,6 @@ describe('Product end point test', function () {
                         name: '',
                         image: 'http://imageurl.roti.com',
                         stock: 'aaaa',
-                        userId: '5cb44796a59db34703243be9',
                         description : 'Rooooti'
                     }
                     chai
@@ -251,21 +245,22 @@ describe('Product end point test', function () {
                     })
                     .catch(err => console.log((err)))
                 })
+
                 it('Should return status 400 with error description is empty', function(done) {
                     let newProduct = {
                         price: 1,
-                        name: 'Rotia',
+                        name: 'Totaoi',
                         image: 'http://imageurl.roti.com',
                         stock: 'aaaa',
-                        userId: '5cb44796a59db34703243be9',
+                        description : ''
                     }
                     chai
                     .request(app)
                     .post(`/products`)
                     .send(newProduct)
                     .set('token', token)
-                    .then((res) => {  
-                        expect(res.body.errors.name).to.have.property('message'); 
+                    .then((res) => {                    
+                        expect(res.body.errors.description).to.have.property('message'); 
                         expect(res).to.have.status(400)
                         done()
                     })
@@ -289,7 +284,6 @@ describe('Product end point test', function () {
                     expect(res.body[0]).to.have.property('price')
                     expect(res.body[0]).to.have.property('image')
                     expect(res.body[0]).to.have.property('stock')
-                    expect(res.body[0]).to.have.property('userId')
                     expect(res.body[0]).to.have.property('description')
                     done()
                     
@@ -316,7 +310,6 @@ describe('Product end point test', function () {
                     expect(res.body).to.have.property('price')
                     expect(res.body).to.have.property('image')
                     expect(res.body).to.have.property('stock')
-                    expect(res.body).to.have.property('userId')
                     expect(res.body).to.have.property('description')
                     done()
                     
@@ -337,7 +330,6 @@ describe('Product end point test', function () {
                     name: 'Buku',
                     image: 'http://imageurl.buku.com',
                     stock: 2,
-                    userId: '5cb44796a59db34703243be9',
                     description : 'Bukubauauauaukubu'
                 }
 
@@ -353,7 +345,6 @@ describe('Product end point test', function () {
                     expect(res.body).to.have.property('price')
                     expect(res.body).to.have.property('image')
                     expect(res.body).to.have.property('stock')
-                    expect(res.body).to.have.property('userId')
                     expect(res.body).to.have.property('description')
                     done()
                 })
@@ -378,7 +369,6 @@ describe('Product end point test', function () {
                     expect(res.body).to.have.property('price')
                     expect(res.body).to.have.property('image')
                     expect(res.body).to.have.property('stock')
-                    expect(res.body).to.have.property('userId')
                     expect(res.body).to.have.property('description')
                     done()
                 })
@@ -389,7 +379,96 @@ describe('Product end point test', function () {
             })
         })
     })
+})
 
 
+// ============= TESTING FAIL ON CUSTOMER ==============
+
+
+describe('Product end point test for user', function () {
+
+
+    before(function (done) {
+    let newUser = {
+        name: 'Paulina',
+        address: 'Radalhahahahahhahahahaha',
+        email: "pauline@gmail.com",
+        role: "customer",
+        password: "123456"
+    }
+    
+    User.create(newUser)
+    .then(user => {
+            let { name, email, _id } = user
+            token = jwt.sign({  id: _id, email, name
+            }, process.env.JWT_SECRET)
+            done()
+        })
+    .catch(err => { done() }) })
+
+
+
+    after(function (done) {   
+        Product.deleteMany({})
+        .then(() => { })
+        .catch(err => { done() })
+
+        User.deleteMany({})
+        .then(() => { done() })
+        .catch(err => { done() })
+    })
+
+    // console.log('disini');
+    describe('User Sign in',  function() {
         
-   })
+        it ('Should return an object of new user', function (done) {   
+            let data = {
+                email : 'pauline@gmail.com',
+                password : '123456'
+            }
+            chai
+            .request(app)
+            .post('/users/signin/local')
+            .send(data)
+            .then(res => {
+                expect(res.body).to.be.an('object')
+                expect(res).to.have.status(200)
+                token = res.body.token   
+                done()
+            })
+            .catch(err => {
+                console.log(err, 'ini error??');
+                done(err)
+            })
+        })
+    })
+    
+    describe('POST /products', function () {
+        describe('Fail: ', function () {
+            it('App return an object of new product with status 401 unauthorized', function (done) {
+                let newProduct = {
+                    price: 20000,
+                    name: 'Buku',
+                    image: 'http://imageurl.buku.com',
+                    stock: 10,
+                    description : 'Bukubukubu'
+                }
+                chai
+                    .request(app)
+                    .post('/products')
+                    .send(newProduct)
+                    .set('token', token)
+                    .then(res => {
+                        expect(res).to.have.status(401)
+                        expect(res.body).to.be.an('object')
+                        expect(res.body).to.have.property('message')
+                        done()
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+                })
+            })
+
+        })
+    })

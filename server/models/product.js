@@ -24,10 +24,6 @@ const productSchema = new Schema({
         type : Number,
         required : [true, 'Stock must be filled'],
         min : [0, 'Invalid input']
-    },
-    userId : {
-        type : Schema.Types.ObjectId,
-        ref : 'User'
     }
 })
 

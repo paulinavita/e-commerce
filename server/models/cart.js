@@ -6,13 +6,10 @@ const cartSchema = new Schema({
         type : Schema.Types.ObjectId,
         ref : 'User'
     },
-    stock : {
-        type : 'Integer'
-    },
-    productId : {
+    productId : [{
         type : Schema.Types.ObjectId,
         ref : 'Product'
-    }
+    }]
 })
 
 const Cart = new mongoose.model('Cart', cartSchema)

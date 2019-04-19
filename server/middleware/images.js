@@ -8,7 +8,7 @@ const storage = Storage({
   keyFilename: process.env.KEYFILE_PATH
 })
 const bucket = storage.bucket(CLOUD_BUCKET)
-console.log('masuk 1');
+console.log('masuk google cloud bucket');
 
 const getPublicUrl = (filename) => {
     

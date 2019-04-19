@@ -1,13 +1,14 @@
 const Product = require('../models/product')
-
+let allProducts;
 class ProductController {
 
     static create (req,res) {
-        let url;    
-        if (req.file) url = req.file.cloudStoragePublicUrl
-        else url = `https://www.google.com/url?sa=i&source=images&cd=&cad=rja&uact=8&ved=2ahUKEwjVjeWhrNnhAhWRfisKHWnGBLoQjRx6BAgBEAU&url=http%3A%2F%2Frebloggy.com%2Fpost%2Fgalaxy-nature-crystal-witch-crystals-witchcraft-new-age-paganism-wiccan-pagan-ta%2F114001905018&psig=AOvVaw3UbzlKZM3HOqC6gk19up1g&ust=1555666709096371`
+        let url = req.file.cloudStoragePublicUrl  
         Product.create({
-            ...req.body,
+            name : req.body.name,
+            description : req.body.description,
+            stock : req.body.stock,
+            price : req.body.price,
             image : url
         })
         .then(data =>{    
@@ -18,9 +19,29 @@ class ProductController {
         })
     }
 
+    static deductStock(id, amount) {
+        Product.findById(id)
+        .then(foundProduct => {
+            console.log(foundProduct, 'apakah dapat produk tsb');
+            console.log('====================-=', foundProduct.stock, '///////' ,amount);
+            foundProduct.stock -= +amount
+            foundProduct.save()
+        })
+        .catch(err => {
+            res.status(400).json(err)
+        })
+    }
+
+    static findAllAndUpdateStock() {
+        allProducts.forEach(product => {
+            product.update()
+        })
+    }
+
     static findAll (req,res) {
         Product.find({})
         .then(data =>{
+            allProducts = data
             res.status(200).json(data)
         })
         .catch(err => {
@@ -51,25 +72,35 @@ class ProductController {
     }
 
     static findOne(req,res) {
-        Product.findOne({_id : req.params.id})
+        
+        console.log(req.params, 'INI BENTUKNYA APA?');
+        
+        Product.findOne({_id :req.params.id})
         .then(product => {
+            console.log(product,'///');
             if (product) res.status(200).json(product)
             else res.status(400).json({message : 'No such product'})
         })
         .catch(err => {
+            console.log('knp err', err);          
             res.status(400).json(err)
         })
     }
 
+
     static editProduct(req,res) {
-        let url;
-        if (req.file) url = req.file.cloudStoragePublicUrl
-        else url = `https://www.google.com/url?sa=i&source=images&cd=&cad=rja&uact=8&ved=2ahUKEwjVjeWhrNnhAhWRfisKHWnGBLoQjRx6BAgBEAU&url=http%3A%2F%2Frebloggy.com%2Fpost%2Fgalaxy-nature-crystal-witch-crystals-witchcraft-new-age-paganism-wiccan-pagan-ta%2F114001905018&psig=AOvVaw3UbzlKZM3HOqC6gk19up1g&ust=1555666709096371`
+        let cloudStoragePublicUrl = ''
+        if (req.file) cloudStoragePublicUrl = req.file.cloudStoragePublicUrl
+        else cloudStoragePublicUrl = req.body.image
+        console.log(req.body, 'dan', req.file ,'?????');
 
         Product.findOneAndUpdate(
             {_id : req.params.id}, 
-            {...req.body,
-             image : url
+            {name : req.body.name,
+            description : req.body.description,
+            stock : req.body.stock,
+            price : req.body.price,
+             image : cloudStoragePublicUrl
             }, 
             {new : true})
         .then(product => {

@@ -53,10 +53,6 @@
   export default {
     props : ['cartItems'],
     components : {Load},
-    created() {
-
-      console.log('pindah halamann');
-    },
     data () {
       return {
         status : '',
@@ -86,10 +82,14 @@
     getTotalCart() {
       let total = 0
       this.cartItems.forEach(item => total += (item.amount * item.productId.price))
+      this.sumPrice = total
       return total
     }
   }, 
     methods : {
+      refetch() {
+        return this.cartItems
+      },
       totalAmount (price, qty) {
         // this.sum += (+price * +qty)
         return (+price * +qty)
@@ -153,21 +153,24 @@
         })
       },
       checkOut() {
-        this.axios.delete(`carts/checkout`, {
-            headers: {
-              'token': localStorage.getItem('token')
-            }
-        }) 
-        .then(({data}) => {
-          console.log(data, 'dapet apa????');
-          this.$swal('Thank you for shopping with us!', 'warning')
-          this.$emit('after-checkout')
-
-          
-        })
-        .catch(err => {
-            this.$swal('Something is wrong', 'warning')
-        })    
+        if (this.sumPrice == 0) {
+          this.$swal("You haven't bought anything from us yet ):")
+        } else {
+          this.axios.delete(`carts/checkout`, {
+              headers: {
+                'token': localStorage.getItem('token')
+              }
+          }) 
+          .then(({data}) => {
+            console.log(data, 'dapet apa????');
+            this.$swal('Thank you for shopping with us!', 'warning')
+            this.$emit('after-checkout')
+  
+          })
+          .catch(err => {
+              this.$swal('Something is wrong', 'warning')
+          })    
+        }
       }
     }
   }

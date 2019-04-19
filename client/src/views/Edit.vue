@@ -16,9 +16,9 @@
           <td class="text-xs-center">{{ props.item.stock }}</td>
           <td class="text-xs-center">{{ props.item.description }}</td>
           <td class="text-xs-center"><img style="width:55px;height:auto;" v-bind:src="props.item.image"/></td>
-          <td class="text-xs-center"><v-btn flat color="success"><router-link style="text-decoration: none;" :to="`/secret/edit/${props.item._id}` + props.item._id ">Edit</router-link></v-btn></td>
+          <td class="text-xs-center"><router-link style="text-decoration: none;" :to="{name: 'editById', params :{id : props.item._id} }"><v-btn flat color="success">Edit</v-btn></router-link></td>
           <td class="text-xs-center"><v-btn flat @click="deleteProduct(props.item._id)" color="success">Delete</v-btn></td>
-
+          <!-- v-on:click="$emit('mode-edit', props.item._id)"  -->
         </template>
         </v-data-table>
           </v-card-text>
@@ -64,7 +64,6 @@ export default {
     },
 }
 </script>
-    export de
 
 <style>
 

@@ -1,13 +1,18 @@
 const User = require('../models/user')
 const Cart = require('../models/cart')
 const Product = require('../models/product')
-
+const deductStock = require('../controllers/ProductController').deductStock
+console.log(deductStock, '/////')
 class CartController {
 
     static findOne(req, res) {
+        console.log('masuk 1');
+        
         Cart.find({userId : req.authenticatedUser.id})
         .populate('productId')
         .then(found => {
+            console.log(found, 'found datanya');
+            
             res.status(200).json(found)
         })
         .catch(err => {
@@ -37,9 +42,27 @@ class CartController {
     // }
 
     static checkoutDelete(req,res) {
-        Cart.deleteMany({userId : req.authenticatedUser.id})
-        .then(details => {
-            res.status(200).json(details)
+        Cart.find({userId : req.authenticatedUser.id})
+        .then((arrFound) => {
+            console.log(arrFound ,'/////');
+            
+            let updateProduct = async function(id, amount) {
+                await deductStock(id, amount)
+            }
+            arrFound.forEach(e => {
+                console.log(e, 'ELEMENNNNNN');
+                
+                return updateProduct(e.productId, e.amount)
+            })
+        })
+        .then(() => {
+            Cart.deleteMany({userId : req.authenticatedUser.id})
+            .then(details => {
+                res.status(200).json(details)
+            })
+            .catch(err => {
+                res.status(400).json(err)
+            })
         })
         .catch(err => {
             res.status(400).json(err)

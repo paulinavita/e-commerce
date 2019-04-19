@@ -1,7 +1,7 @@
 <template>
   <v-card class="mx-auto" style="max-width: 500px;">
     <v-toolbar color="success accent-4" cards dark flat>
-      <v-card-title class="title font-weight-regular">Add New Product</v-card-title>
+      <v-card-title class="title font-weight-regular">Edit New Product</v-card-title>
       <v-spacer></v-spacer>
       <v-btn icon>
         <v-icon>mdi-magnify</v-icon>
@@ -55,13 +55,13 @@
       <v-btn flat @click="$refs.form.reset()">Clear</v-btn>
       <v-spacer></v-spacer>
         <v-btn
-          @click="addProduct"
-          :disabled="!form"
-          :loading="isLoading"
-          class="white--text"
-          color="deep-purple accent-4"
-          depressed
-        >Submit</v-btn>
+        @click="editProduct($route.params.id)"
+        :disabled="!form"
+        :loading="isLoading"
+        class="white--text"
+        color="deep-purple accent-4"
+        depressed
+        >Edit</v-btn>
     </v-card-actions>
     <v-dialog v-model="dialog" absolute max-width="400" persistent>
       <v-card>
@@ -78,6 +78,7 @@
 
 <script>
 export default {
+  props: ["mode"],
   data: () => ({
     moda: "",
     name: "",
@@ -101,10 +102,6 @@ export default {
     }
   }),
   created() {
-    console.log(this.$route.params.id, 'halo');
-
-    this.moda = this.mode;
-    console.log(this.$route.params.id, "INI APA PARAMS??");
     if (this.$route.params.id == undefined) {
       this.$emit("change-to-new");
       if (this.mode == "new") {
@@ -121,9 +118,27 @@ export default {
   methods: {
     getImage(event) {
       this.image = event.target.files[0];
-      // console.log("disini", this.image, "//////////");
+      console.log("disini", this.image, "//////////");
     },
-    addProduct() {
+    populateData(id) {
+      console.log("DAPET ID  GAK", id);
+      this.axios
+        .get(`products/${id}`)
+        .then(({ data }) => {
+          console.log("MASUKKK", data);
+          this.image = data.image;
+          this.name = data.name;
+          this.stock = data.stock;
+          this.price = data.price;
+          this.description = data.description;
+        })
+        .catch(err => {
+          console.log(err.response, "///");
+
+          this.$swal("Something is wrong", "warning");
+        });
+    },
+    editProduct(id) {
       let formData = new FormData();
       formData.append("name", this.name);
       formData.append("description", this.description);
@@ -132,47 +147,25 @@ export default {
       formData.append("image", this.image);
       console.log(formData, "ini form data");
       this.axios
-        .post(`products`, formData, {
+        .patch(`products/${id}`, formData, {
           headers: {
             token: localStorage.getItem("token"),
             "Content-Type": "multipart/form-data"
           }
         })
-        .then(response => {
-          let { data } = response;
-          this.$swal("Product Added!", "View it on your dashboard", "success");
-          this.name = "";
-          this.stock = "";
-          this.price = "";
-          this.description = "";
-        })
-        .catch(function(err, textStatus) {
-          console.log(err);
-          this.$swal({
-            text: "Something is wrong",
-            icon: "warning",
-            button: "Understood"
-          });
-        });
-    },
-    populateData(id) {
-      console.log("DAPET ID  GAK", id);
-      // console.log(this.$routes.params.id, 'DAPET GA YG BWH')
-      this.axios
-        .get(`products/${id}`)
-        .then(({ data }) => {
-          console.log("MASUKKK", data);
-
-          this.name = data.name;
-          this.stock = data.stock;
-          this.price = data.price;
-          this.description = data.description;
-        })
-        .catch(err => {
-          console.log(err, "///");
-
-          this.$swal("Something is wrong", "warning");
-        });
+      .then(response => {
+        let { data } = response;
+        this.$swal("Product Updated!", "View it on your dashboard", "success");
+        this.name = "";
+        this.stock = "";
+        this.price = "";
+        this.description = "";
+      })
+      .catch((err) => {
+        console.log(err.response, '???');
+        
+        this.$swal("Something is wrong", "warning");
+      });
     }
   }
 };

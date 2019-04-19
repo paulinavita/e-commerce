@@ -9,21 +9,23 @@
             </router-link>
             <br>
             <router-link to="/secret/add">
-              <v-btn outline color="success">Add Products</v-btn>
+              <v-btn @click="changeToAdd" outline color="success">Add Products</v-btn>
             </router-link>
             <br>
             <router-link to="/secret/edit">
-              <v-btn outline color="success">Edit Products</v-btn>
+              <v-btn @click="changeToEdit" outline color="success">Edit Products</v-btn>
             </router-link>
 
-            <!-- <li><router-link to="/secret/add">Add Products</router-link></li> -->
-            <!-- <li @click="goToEdit"><router-link to="/secret/edit/{{$route.params.id}}">New Product</router-link></li> -->
           </v-card-text>
         </v-card>
       </v-flex>
 
       <v-flex d-flex lg9>
-        <router-view @delete-product="deleteProduct" :arrProducts="arrProducts"></router-view>
+        <router-view
+        @change-to-edit="changeToEdit"
+        @change-to-add="changeToAdd"
+        @delete-product="deleteProduct"
+        :arrProducts="arrProducts" ></router-view>
       </v-flex>
     </v-layout>
   </v-container>
@@ -33,9 +35,11 @@
 <script>
 import Edit from "./Edit.vue";
 export default {
+  
   components: { Edit },
   data() {
     return {
+      mode : 'new',
       isLogin: false,
       arrProducts: [],
       headers: [
@@ -101,6 +105,13 @@ export default {
           swal("Action cancelled. Product still on the sell");
         }
       });
+    },
+    changeToAdd() {
+      this.mode = 'new'
+    },
+    changeToEdit() {
+      this.mode = 'edit'
+      
     }
   }
 };

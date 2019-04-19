@@ -55,6 +55,6 @@ export default {
 <style scoped>
 
 .container {
-  width: 80%
+  width: 100%
 }
 </style>

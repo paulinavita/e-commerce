@@ -1,10 +1,10 @@
 <template>
-  <v-app class="grey lighten-3">
-    <nav>
-      <v-toolbar flat color="transparent">
+  <v-app class="white">
+    <nav  style="opacity: 0.5; filter: alpha(opacity=50); text-decoration:none">
+      <v-toolbar flat>
         <router-link to="/">
           <!-- START NON LOGGED IN -->
-          <v-toolbar-title class="text-uppercase grey--text">
+          <v-toolbar-title  class="text-uppercase grey--text">
             <span class="font-weight-light">EPICLESIS</span>
             <span>HILL</span>
           </v-toolbar-title>
@@ -30,24 +30,29 @@
           <span>Stores</span>
         </v-btn>
         </router-link>
+          <v-spacer></v-spacer>
         <v-flex xs12 sm6 md3>
           <v-text-field height=25 prepend-icon="search" v-if="isLogin"  v-model="search" label="Search"></v-text-field>
         </v-flex>
-        <v-btn flat color="grey" v-if="isLogin" @click.prevent="signOut">
-          <span>Sign Out</span>
-          <v-icon right>exit_to_app</v-icon>
-        </v-btn>
+        
         <v-badge v-if="isLogin" left>
       <template v-slot:badge>
         <span>{{totalProductsOnCart}}</span>
+        <span>On Cart</span>
       </template>
       <v-icon color="grey lighten-1"> shopping_cart </v-icon>
     </v-badge>
         <v-btn flat color="grey" v-if="isLogin" @click.prevent="getCheckout">
           <v-icon>shopping_basket</v-icon>
+          <span>Cart</span>
         </v-btn>
         <v-btn flat color="grey" v-if="isLogin && role == 'admin'" @click="getAdminPage">
-          <v-icon right>fingerprint</v-icon>
+          <span>Admin</span>
+          <v-icon>fingerprint</v-icon>
+        </v-btn>
+        <v-btn flat color="grey" v-if="isLogin" @click.prevent="signOut">
+          <span>Sign Out</span>
+          <v-icon>exit_to_app</v-icon>
         </v-btn>
         <!-- END OF BUTTON APPEARING ON LOGGED IN -->
       </v-toolbar>
@@ -56,7 +61,7 @@
 
     <v-content>
       <router-view 
-      @success-register="successRegister"
+       @success-register="successRegister"
        @success-login="successLogin"
        @inc-qty="getCartAmount"
        @dec-qty="getCartAmount"
@@ -84,6 +89,8 @@
 </template>
 
 <script>
+// import {bus} from '../main'
+
 export default {
   name: "App",
   components: {},
@@ -115,7 +122,7 @@ export default {
     signOut() {
       localStorage.clear();
       this.isLogin = false;
-      this.$router.push({ path: "/signin/local" });
+      this.$router.push({ path: "/" });
     },
     getProducts() {
       this.$router.push({ path: "/products" });
@@ -124,6 +131,7 @@ export default {
       this.$router.push({path : "/secret"})
     },
     getCheckout() {
+      this.getCartAmount()
       this.$router.push({path: "/checkout"})
     },
     getCartAmount() {

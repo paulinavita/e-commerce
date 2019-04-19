@@ -39,7 +39,7 @@
             <v-icon>keyboard_arrow_down</v-icon>
             </v-btn><br>
             <span>{{ total }}</span>
-          <v-btn @click="addQty" flat icon color="pink">
+          <v-btn :disabled="isDisable()" @click="addQty" flat icon color="pink">
             <v-icon>keyboard_arrow_up</v-icon>
           </v-btn>
           <v-btn color="primary" flat @click="addToCart('_id')">Add To Cart</v-btn>
@@ -63,6 +63,10 @@ export default {
     }
   }, 
   methods: {
+    isDisable() {
+      if (this.total >= this.stock) return true 
+      else return false
+    },
     addToCart() {
       console.log(this._id);
       console.log(localStorage.getItem('id'),this._id, this.total);

@@ -12,7 +12,7 @@ const cartSchema = new Schema({
     },
     amount : {
         type : Number,
-        required : [true, 'Amountt is required'],
+        required : [true, 'Amount is required'],
         min : [1, 'Invalid input']
     }
 })

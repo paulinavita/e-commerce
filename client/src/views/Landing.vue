@@ -14,13 +14,13 @@
       return {
         items: [
           {
-            src: 'https://smhttp-ssl-64693.nexcesscdn.net/media/codazon/slideshow/resize/1900x1000/healingcrystalsforsale.jpg'
+            src: 'https://cdn.shopify.com/s/files/1/1158/2544/files/celestial_slide_final_2000x.jpg?v=1526704355'
           },
           {
-            src: 'https://media.vogue.in/wp-content/uploads/2018/03/Why-Crystal-Healing-is-trending-right-now.jpg'
+            src: 'https://cdn.shopify.com/s/files/1/0019/0352/5977/files/20170714-moondeck-photosbyhaana-3962-webrez_1240x.jpg?v=1537659136'
           },
           {
-            src: 'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/energy-muse-home-makeover-5-1506526729.jpg?crop=1.00xw:0.342xh;0,0.498xh&resize=1200:*'
+            src: 'https://cdn.shopify.com/s/files/1/1158/2544/files/modern_witch_slide_1_3ed26324-21af-4565-9760-822aa90aa15a_2000x.jpg?v=1526906527'
           }
         ]
       }

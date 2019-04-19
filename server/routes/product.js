@@ -8,7 +8,7 @@ const images = require('../middleware/images')
 router.get('/', ProductController.findAll)
 router.get('/:id', ProductController.findOne)
 router.post('/', authenticate, authadmin, images.multer.single('image'), images.sendUploadToGCS, ProductController.create)
-router.put('/:id', authenticate, authadmin, images.multer.single('image'), images.sendUploadToGCS, ProductController.editProduct)
+router.patch('/:id', authenticate, authadmin, images.multer.single('image'), images.sendUploadToGCS, ProductController.editProduct)
 router.delete('/:id', authenticate, authadmin, ProductController.deleteProduct)
 
 

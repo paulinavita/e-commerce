@@ -5,6 +5,7 @@ import Stores from './views/Stores.vue'
 import Checkout from './views/Checkout.vue'
 import Admin from './views/Admin'
 import AddForm from './views/AddForm'
+import EditForm from './views/EditForm'
 import Edit from './views/Edit'
 import Login from './views/Login'
 import Register from './views/Register'
@@ -56,13 +57,11 @@ export default new Router({
           path : 'edit',
           name : 'edit',
           component : Edit,
-          children : [
-            {
-              path : ':id',
-              name : 'editById',
-              component : EditForm,
-            }
-          ]
+        },
+        {
+          path : 'edit/:id',
+          name : 'editById',
+          component : EditForm,
         }
       ]
     }

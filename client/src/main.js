@@ -4,6 +4,10 @@ import './plugins/vuetify'
 import App from './App.vue'
 import router from './router'
 import VueSwal from 'vue-swal'
+import './stylus/main.styl'
+
+// export const bus = new Vue()
+
 
 Vue.use(VueSwal)
 Vue.config.productionTip = false

@@ -1,10 +1,11 @@
 <template> 
-   <v-flex md3 ma-3>
+   <v-flex md3 ma-4>
       <v-hover>
       <v-card flat
       slot-scope="{hover}"
-      color="grey lighten-4"
+      color="white"
       max-width="300"
+      min-width="300"
       >
         <v-img
           class="white--text"
@@ -16,18 +17,19 @@
             v-if="hover"
             class="d-flex transition-fast-in-fast-out grey darken-2 v-card--reveal display-2 white--text"
             style="height: 100%;"
-          >IDR{{price}}
+          >IDR{{price.toLocaleString()}}
           </div>
         </v-expand-transition>
           <v-container fill-height fluid>
             <v-layout fill-height>
               <v-flex xs12 align-end flexbox>
-                <span class="headline black--text">{{name}}</span>
               </v-flex>
             </v-layout>
           </v-container>
         </v-img>
         <v-card-title>
+          <span class="headline black--text">{{name}}</span>
+
           <div>
           </div>
         </v-card-title>
@@ -42,12 +44,6 @@
 
           ></popup>
         </v-card-actions>
-        <!-- <v-card-actions> -->
-          <!-- <v-btn v-if="isAdmin" flat color="orange" @click="addToCart">Add To Cart</v-btn> -->
-          <!-- <Modal/> -->
-          <!-- <v-btn v-if="isAdmin" flat color="orange">Explore</v-btn> -->
-          <!-- <v-btn v-if="!isAdmin" flat color="orange">Edit</v-btn> -->
-        <!-- </v-card-actions> -->
       </v-card>
     </v-hover>
     </v-flex>

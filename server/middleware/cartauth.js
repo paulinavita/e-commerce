@@ -1,12 +1,12 @@
 const Cart = require('../models/cart')
-
+console.log('ini kepake middlewae cart auth');
 module.exports = {
     cartauth : function (req, res, next) {
-        // console.log('MASUK AUTH');
+        console.log('MASUK AUTH');
         
         let cartId = req.headers.cartid
         let userId = req.authenticatedUser.id
-        // console.log(cartId, userId, 'apa kah ini????');
+        console.log(cartId, userId, 'apa kah ini????');
         
       Cart.findById({_id : cartId})
       .then(found => {

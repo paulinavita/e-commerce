@@ -1,5 +1,5 @@
 <template> 
-  <v-layout >
+   <v-flex md3 ma-3>
       <v-hover>
       <v-card flat
       slot-scope="{hover}"
@@ -32,13 +32,13 @@
           </div>
         </v-card-title>
         <v-card-actions>
-          <v-btn  flat color="orange" @click="addToCart">Add To Cart</v-btn>
           <popup
           v-bind:name="name"
           v-bind:description="description"
           v-bind:stock="stock"
           v-bind:price="price"
           v-bind:image="image"
+          v-bind:_id="_id"
 
           ></popup>
         </v-card-actions>
@@ -50,14 +50,14 @@
         <!-- </v-card-actions> -->
       </v-card>
     </v-hover>
-  </v-layout>
+    </v-flex>
 </template> 
 
 
 <script>
 import popup from './Modal.vue'
 export default {
-  props : ['name', 'price', 'stock', 'image', 'description'],
+  props : ['name', 'price', 'stock', 'image', 'description', '_id'],
   data() {
     return {
       isAdmin : false
@@ -87,3 +87,4 @@ export default {
   width: 100%;
 }
 </style>
+

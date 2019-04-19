@@ -1,7 +1,7 @@
 <template>
   <v-app class="grey lighten-3">
     <nav>
-      <v-toolbar flat app>
+      <v-toolbar flat color="transparent">
         <router-link to="/">
           <!-- START NON LOGGED IN -->
           <v-toolbar-title class="text-uppercase grey--text">
@@ -37,10 +37,16 @@
           <span>Sign Out</span>
           <v-icon right>exit_to_app</v-icon>
         </v-btn>
-        <v-btn flat color="grey" v-if="isLogin" @click.prevent="Cart">
-          <v-icon right>shopping_basket</v-icon>
+        <v-badge v-if="isLogin" left>
+      <template v-slot:badge>
+        <span>{{totalProductsOnCart}}</span>
+      </template>
+      <v-icon color="grey lighten-1"> shopping_cart </v-icon>
+    </v-badge>
+        <v-btn flat color="grey" v-if="isLogin" @click.prevent="getCheckout">
+          <v-icon>shopping_basket</v-icon>
         </v-btn>
-        <v-btn flat color="grey" v-if="isLogin && role == 'admin'" @click="getAdminPage()">
+        <v-btn flat color="grey" v-if="isLogin && role == 'admin'" @click="getAdminPage">
           <v-icon right>fingerprint</v-icon>
         </v-btn>
         <!-- END OF BUTTON APPEARING ON LOGGED IN -->
@@ -52,19 +58,23 @@
       <router-view 
       @success-register="successRegister"
        @success-login="successLogin"
+       @inc-qty="getCartAmount"
+       @dec-qty="getCartAmount"
+       @delete-whole-card="getCartAmount"
+       @after-checkout="getCartAmount"
        :searchData="search"
-
+       :cartItems="cartItems"
        ></router-view>
     </v-content>
 
 
     <!-- START ON FOOTER -->
     <template>
-      <v-footer dark height="auto">
+      <v-footer white height="auto">
         <v-card class="flex" flat tile>
-          <v-card-actions class="grey darken-3 justify-center">
+          <v-card-actions class="white justify-center">
             &copy;2019 —
-            <strong>Vuetify</strong>
+            <strong>EpiclesisHill</strong>
           </v-card-actions>
         </v-card>
       </v-footer>
@@ -79,22 +89,18 @@ export default {
   components: {},
   data() {
     return {
+      totalProductsOnCart : 0,
       role : '',
       search: '',
-      isLogin: false,
-      icons: [
-        "fab fa-facebook",
-        "fab fa-twitter",
-        "fab fa-google-plus",
-        "fab fa-linkedin",
-        "fab fa-instagram"
-      ]
+      cartItems : [],
+      isLogin: false
     };
   },
   created() {
     if (localStorage.getItem("token")) {
       this.isLogin = true;
       this.role = localStorage.getItem('role')
+      this.getCartAmount()
     }
   },
   methods: {
@@ -116,6 +122,38 @@ export default {
     },
     getAdminPage() {
       this.$router.push({path : "/secret"})
+    },
+    getCheckout() {
+      this.$router.push({path: "/checkout"})
+    },
+    getCartAmount() {
+      this.axios.get('carts', {
+        headers: {
+          token: localStorage.getItem("token")
+          }
+      })
+      .then(({data}) => {
+        console.log(data);
+        this.cartItems = data 
+        // totalProductsOnCart;
+        this.totalProductsOnCart = 0
+        data.forEach(cart => {
+          this.totalProductsOnCart += +cart.amount
+        });
+        
+      })
+      .catch(err => {
+        console.log(err.response);
+        this.$swal('Something is wrong', 'warning')
+      })
+    },
+    thousandSeparator (num) {
+      num = String(num)
+      return (
+        num
+          .replace('.', ',')
+          .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
+      )
     }
   }
 };

@@ -1,16 +1,17 @@
 <template>
-  <v-container fluid grid-list-md>
-    <v-layout row wrap>
-      <Blok
-        v-for="(product, index) in filteredProduct"
-        v-bind:key="index"
+  <v-container grid-list-lg>
+    <v-layout align-center justify-center row wrap>
+      <Blok md4
+        v-for="product in filteredProduct"
+        v-bind:key="product._id"
         v-bind:name="product.name"
         v-bind:price="product.price"
         v-bind:description="product.description"
         v-bind:stock="product.stock"
         v-bind:image="product.image"
+        v-bind:_id="product._id"
       />
-    </v-layout>
+   </v-layout>
   </v-container>
 </template>
 
@@ -18,7 +19,7 @@
 import Blok from '../components/Blok.vue'
 export default {
   components: {Blok},
-  props : ['searchData'],
+  props : ['searchData', 'thousandSeparator'],
   data() {
     return {
       drawer: false,
@@ -46,7 +47,7 @@ export default {
         .catch(err => {
             this.$swal('Something is wrong', '', 'error')
         })
-    }
+    },
   },
 }
 </script>

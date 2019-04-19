@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from './views/Home.vue'
+import Landing from './views/Landing.vue'
 import Stores from './views/Stores.vue'
 import Checkout from './views/Checkout.vue'
 import Admin from './views/Admin'
@@ -19,7 +19,7 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      component: Home
+      component: Landing
     },
     {
       path: '/signin/local',
@@ -48,16 +48,24 @@ export default new Router({
       component : Admin,
       children : [
         {
-          path : '/add',
+          path : 'add',
           name : 'add',
           component : AddForm
         },
         {
-          path : '/edit',
+          path : 'edit',
           name : 'edit',
-          component : Edit
+          component : Edit,
+          children : [
+            {
+              path : ':id',
+              name : 'editById',
+              component : EditForm,
+            }
+          ]
         }
       ]
     }
   ]
 })
+

@@ -56,8 +56,7 @@ export default {
     isLoading: false,
     rules: {
       email: v => (v || '').match(/@/) || 'Please enter a valid email',
-      length: len => v =>
-        (v || '').length >= len || `Invalid character length, required ${len}`,
+      length: len => v => (v || '').length >= len || `Invalid character length, required ${len}`,
       required: v => !!v || 'This field is required'
     }
   }),

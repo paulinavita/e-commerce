@@ -42,10 +42,10 @@
           <v-btn @click="addQty" flat icon color="pink">
             <v-icon>keyboard_arrow_up</v-icon>
           </v-btn>
-          <v-btn color="primary" flat @click="dialog = true">Add To Cart</v-btn>
+          <v-btn color="primary" flat @click="addToCart('_id')">Add To Cart</v-btn>
              <v-spacer></v-spacer>
 
-            <v-btn color="primary" flat @click="dialog = true">Close</v-btn>
+            <v-btn color="primary" flat @click="dialog = false">Close</v-btn>
 
         </v-card-actions>
       </v-card>
@@ -55,13 +55,39 @@
 
 <script>
 export default {
-  props: ["name", "price", "stock", "image", "description"],
+  props: ["name", "price", "stock", "image", "description", "_id"],
   data() {
     return {
-        dialog : false,
+      dialog : false,
         total : 0
     }
-  }, methods: {
+  }, 
+  methods: {
+    addToCart() {
+      console.log(this._id);
+      console.log(localStorage.getItem('id'),this._id, this.total);
+      this.axios.post('carts', 
+      {
+          userId : localStorage.getItem('userId'),
+          productId : this._id,
+          amount : this.total
+      },
+      { headers : {
+          token : localStorage.getItem('token')
+      }
+      })
+      .then(({data}) => {
+        this.$swal("Added to cart", "success");
+        console.log(data, 'dapet apa ya');  
+      })
+      .catch(err => {
+        console.log(err);
+        
+        console.log((err.response, 'errr bagian add to cart?'));
+        
+      })
+      
+    },
       addQty() {
           this.total++
     },

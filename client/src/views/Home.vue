@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid grid-list-xs >
+  <v-container  fluid grid-list-xs >
     <v-layout row wrap>
       <v-flex xl12 fill-height >
         <v-card dark color="primary">

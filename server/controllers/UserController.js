@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken')
 
 class UserController {
 
-    static create (req,res) {        
+    static create (req,res) {   
         User.create({
             name : req.body.name,
             address : req.body.address,
@@ -13,8 +13,7 @@ class UserController {
             role  : req.body.role,
             password : req.body.password
         })
-        .then(data =>{   
-            return Cart.create({})    
+        .then(data => {   
             res.status(201).json(data)
         })
         .catch(err => {
@@ -25,7 +24,6 @@ class UserController {
     static findAll (req,res) {
         User.find({})
         .then(data =>{       
-            // console.log((data, 'ada ga datanya'));
                  
             res.status(200).json(data)
         })

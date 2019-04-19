@@ -101,6 +101,7 @@
 //                 .send({
 //                     userId : userId,
 //                     productId : [productId,productId,productId],
+//                     amount : 10
 //                 })
 //                 .set('token', token)
 //                 .set('cartId', cartId)
@@ -128,6 +129,7 @@
 //                     .send({
 //                         userId : userId,
 //                         productId : [productId,productId],
+//                         amount : 10
 //                     })
 //                     .then((res) => { 
 //                         // let HASILDECODE =  jwt.verify(token, process.env.JWT_SECRET).id           

@@ -11,55 +11,55 @@ let token = null;
 let productId = null;
 
 
-before(function (done) {
-    let newUser = {
-        name: 'Paulina',
-        address: 'Radalhahahahahhahahahaha',
-        email: "pauline@gmail.com",
-        role: "admin",
-        password: "123456"
-    }
-    
-    User.create(newUser)
-    .then(user => {
-        // console.log('berhasil create');
-            let { name, email, _id } = user
-            token = jwt.sign({  id: _id, email, name
-            }, process.env.JWT_SECRET)
-            done()
-        })
-    .catch(err => {
-        done()
-        })
-    })
-
-
-
-after(function (done) {   
-    Product.deleteMany({})
-    .then(() => {
-       
-    })
-    .catch(err => {
-        done()
-
-    })
-
-    User.deleteMany({})
-    .then(() => {
-        done()
-    })
-    .catch(err => {
-        done()
-        
-    })
-
-
-})
 
 describe('Product end point test', function () {
     // console.log('disini');
 
+    before(function (done) {
+        let newUser = {
+            name: 'Paulina',
+            address: 'Radalhahahahahhahahahaha',
+            email: "pauline@gmail.com",
+            role: "admin",
+            password: "123456"
+        }
+        
+        User.create(newUser)
+        .then(user => {
+            // console.log('berhasil create');
+                let { name, email, _id } = user
+                token = jwt.sign({  id: _id, email, name
+                }, process.env.JWT_SECRET)
+                done()
+            })
+        .catch(err => {
+            done()
+            })
+        })
+    
+    
+    
+    after(function (done) {   
+        Product.deleteMany({})
+        .then(() => {
+           
+        })
+        .catch(err => {
+            done()
+    
+        })
+    
+        User.deleteMany({})
+        .then(() => {
+            done()
+        })
+        .catch(err => {
+            done()
+            
+        })
+    
+    
+    })
 
     describe('User Sign in',  function() {
         
@@ -110,7 +110,7 @@ describe('Product end point test', function () {
                         expect(res.body).to.have.property('stock')
                         expect(res.body).to.have.property('description')
                         productId = res.body._id
-                        // console.log(productId, 'DAPAT PRODUCT AIDI');
+                        console.log(productId, 'DAPAT PRODUCT AIDI');
                         done()
                     })
                     .catch(err => {
@@ -118,6 +118,8 @@ describe('Product end point test', function () {
                     })
                 })
             })
+        })
+
 
             describe('Fail: ', function () {
                 let newProduct = {
@@ -267,8 +269,6 @@ describe('Product end point test', function () {
                     .catch(err => console.log((err)))
                 })
             })
-        })
-
 
     describe('GET /products', function () {
         describe('Success: ', function () {
@@ -320,25 +320,43 @@ describe('Product end point test', function () {
                 })
             })
         })
+
+        describe('Fail: ', function () {
+            it('Should return object with 404 status on wrong id search', function(done) {
+                chai
+                .request(app)
+                .get(`/products/5cba114c09d3deda5c14baa7`)
+                .set('token', token)
+                .then((res) => {                    
+                    expect(res).to.have.status(404)
+                    expect(res.body).to.be.an('object')
+                    expect(res.body).to.have.property('message')
+                    done()           
+                })
+                .catch(err => {
+                    console.log((err), 'ini??');
+                    
+                })
+            })
+        })
     })
     
-    describe('PUT /products/:id', function () {
+    describe('PATCH /products/:id', function () {
         describe('Success: ', function () {
             it('Should return object with the selected id that has been updated', function(done) {
                 let editedProduct  = {
                     price: 20200220,
                     name: 'Buku',
                     image: 'http://imageurl.buku.com',
-                    stock: 2,
                     description : 'Bukubauauauaukubu'
                 }
-
                 chai
                 .request(app)
-                .get(`/products/${productId}`)
+                .patch(`/products/${productId}`)
                 .send(editedProduct)
                 .set('token', token)
                 .then((res) => {
+
                     expect(res).to.have.status(200)
                     expect(res.body).to.be.an('object')
                     expect(res.body).to.have.property('_id')
@@ -349,8 +367,31 @@ describe('Product end point test', function () {
                     done()
                 })
                 .catch(err => {
-                    console.log((err), 'ini??');
-                    
+                    console.log((err), 'ini??');       
+                })
+            })
+        })
+
+        describe('Fail: ', function () {
+            it('Should return object with status 401 unauthenticated ', function(done) {
+                let editedProduct  = {
+                    price: 20200220,
+                    name: 'Buku',
+                    image: 'http://imageurl.buku.com',
+                    stock: 2,
+                    description : 'Bukubauauauaukubu'
+                }
+
+                chai
+                .request(app)
+                .patch(`/products/${productId}`)
+                .send(editedProduct)
+                .then((res) => {
+                    expect(res.body.message).to.include('Unauthenticated')
+                    done()
+                })
+                .catch(err => {
+                    console.log((err), 'ini??');       
                 })
             })
         })
@@ -386,7 +427,6 @@ describe('Product end point test', function () {
 
 
 describe('Product end point test for user', function () {
-
 
     before(function (done) {
     let newUser = {
@@ -444,8 +484,8 @@ describe('Product end point test for user', function () {
     })
     
     describe('POST /products', function () {
-        describe('Fail: ', function () {
-            it('App return an object of new product with status 401 unauthorized', function (done) {
+        describe('Fail On USER ACTION: ', function () {
+            it('App return an object of new product with status 401 unauthorized in creating product', function (done) {
                 let newProduct = {
                     price: 20000,
                     name: 'Buku',
@@ -458,7 +498,7 @@ describe('Product end point test for user', function () {
                     .post('/products')
                     .send(newProduct)
                     .set('token', token)
-                    .then(res => {
+                    .then(res => {                        
                         expect(res).to.have.status(401)
                         expect(res.body).to.be.an('object')
                         expect(res.body).to.have.property('message')
@@ -468,7 +508,55 @@ describe('Product end point test for user', function () {
                         console.log(err);
                     })
                 })
-            })
 
+            it('App return an object of new product with status 401 unauthorized in deleting product', function (done) {
+                let newProduct = {
+                    price: 20000,
+                    name: 'Buku',
+                    image: 'http://imageurl.buku.com',
+                    stock: 10,
+                    description : 'Bukubukubu'
+                }
+                chai
+                    .request(app)
+                    .delete(`/products/${productId}`)
+                    .send(newProduct)
+                    .set('token', token)
+                    .then(res => {                        
+                        expect(res).to.have.status(401)
+                        expect(res.body).to.be.an('object')
+                        expect(res.body).to.have.property('message')
+                        done()
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+                })
+
+
+                it('App return an object of new product with status 401 unauthorized in updating product', function (done) {
+                    let newProduct = {
+                        price: 20000,
+                        name: 'Buku',
+                        image: 'http://imageurl.buku.com',
+                        stock: 10,
+                        description : 'Bukubukubu'
+                    }
+                    chai
+                        .request(app)
+                        .patch(`/products/${productId}`)
+                        .send(newProduct)
+                        .set('token', token)
+                        .then(res => {                        
+                            expect(res).to.have.status(401)
+                            expect(res.body).to.be.an('object')
+                            expect(res.body).to.have.property('message')
+                            done()
+                        })
+                        .catch(err => {
+                            console.log(err);
+                        })
+                    })
+            })
         })
-    })
+})

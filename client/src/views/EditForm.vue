@@ -118,14 +118,14 @@ export default {
   methods: {
     getImage(event) {
       this.image = event.target.files[0];
-      console.log("disini", this.image, "//////////");
+    //   console.log("disini", this.image, "//////////");
     },
     populateData(id) {
-      console.log("DAPET ID  GAK", id);
+    //   console.log("DAPET ID  GAK", id);
       this.axios
         .get(`products/${id}`)
         .then(({ data }) => {
-          console.log("MASUKKK", data);
+        //   console.log("MASUKKK", data);
           this.image = data.image;
           this.name = data.name;
           this.stock = data.stock;
@@ -133,8 +133,7 @@ export default {
           this.description = data.description;
         })
         .catch(err => {
-          console.log(err.response, "///");
-
+        //   console.log(err.response, "///");
           this.$swal("Something is wrong", "warning");
         });
     },
@@ -145,7 +144,7 @@ export default {
       formData.append("stock", this.stock);
       formData.append("price", this.price);
       formData.append("image", this.image);
-      console.log(formData, "ini form data");
+    //   console.log(formData, "ini form data");
       this.axios
         .patch(`products/${id}`, formData, {
           headers: {
@@ -162,8 +161,7 @@ export default {
         this.description = "";
       })
       .catch((err) => {
-        console.log(err.response, '???');
-        
+        // console.log(err.response, '???');
         this.$swal("Something is wrong", "warning");
       });
     }

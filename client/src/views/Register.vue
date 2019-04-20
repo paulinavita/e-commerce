@@ -99,7 +99,7 @@ export default {
             })
             .then(({data}) => {
                 this.$router.push({ path: 'login' })
-                console.log('berhasil register');
+                // console.log('berhasil register');
                 this.$emit('success-register')
             })
             .catch((err) => {

@@ -7,7 +7,10 @@ const routes = require('./routes')
 const mongoose = require('mongoose')
 const cors = require('cors')
 app.use(cors())
-mongoose.connect(`mongodb://localhost/e_commerce`, {useNewUrlParser : true})
+
+let uri = process.env.MONGO_DB_URL
+mongoose.connect(uri, {useNewUrlParser : true})
+// mongoose.connect(`mongodb://localhost/e_commerce`, {useNewUrlParser : true})
 .then(() => {
     console.log('====Mongo Connected====');
 })

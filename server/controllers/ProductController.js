@@ -3,7 +3,8 @@ let allProducts;
 class ProductController {
 
     static create (req,res) {
-        let url = req.file.cloudStoragePublicUrl  
+        let url = req.file ? req.file.cloudStoragePublicUrl : '';
+        // let url = req.file.cloudStoragePublicUrl  
         Product.create({
             name : req.body.name,
             description : req.body.description,
@@ -22,10 +23,10 @@ class ProductController {
     static deductStock(id, amount) {
         Product.findById(id)
         .then(foundProduct => {
-            console.log(foundProduct, 'apakah dapat produk tsb');
-            console.log('====================-=', foundProduct.stock, '///////' ,amount);
+            // console.log(foundProduct, 'apakah dapat produk tsb');
+            // console.log('====================-=', foundProduct.stock, '///////' ,amount);
             foundProduct.stock -= +amount
-            foundProduct.save()
+            foundProduct.save
         })
         .catch(err => {
             res.status(400).json(err)
@@ -73,13 +74,13 @@ class ProductController {
 
     static findOne(req,res) {
         
-        console.log(req.params, 'INI BENTUKNYA APA?');
+        // console.log(req.params, 'INI BENTUKNYA APA?');
         
         Product.findOne({_id :req.params.id})
         .then(product => {
-            console.log(product,'///');
+            // console.log(product,'///');
             if (product) res.status(200).json(product)
-            else res.status(400).json({message : 'No such product'})
+            else res.status(404).json({message : 'No such product'})
         })
         .catch(err => {
             console.log('knp err', err);          
@@ -92,7 +93,6 @@ class ProductController {
         let cloudStoragePublicUrl = ''
         if (req.file) cloudStoragePublicUrl = req.file.cloudStoragePublicUrl
         else cloudStoragePublicUrl = req.body.image
-        console.log(req.body, 'dan', req.file ,'?????');
 
         Product.findOneAndUpdate(
             {_id : req.params.id}, 
@@ -103,7 +103,7 @@ class ProductController {
              image : cloudStoragePublicUrl
             }, 
             {new : true})
-        .then(product => {
+        .then(product => {            
             if (product) res.status(200).json(product)
             else res.status(400).json({message : 'No such product'})
         })
@@ -122,10 +122,6 @@ class ProductController {
             res.status(400).json(err)
         })
     }
-
-    // static updateMany(req, res) {
-    //     Product.update({_id: obj._id}, {$set: {value: obj.value}});
-    // }
 
 }
 

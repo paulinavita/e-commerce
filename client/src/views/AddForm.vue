@@ -101,10 +101,10 @@ export default {
     }
   }),
   created() {
-    console.log(this.$route.params.id, 'halo');
+    // console.log(this.$route.params.id, 'halo');
 
     this.moda = this.mode;
-    console.log(this.$route.params.id, "INI APA PARAMS??");
+    // console.log(this.$route.params.id, "INI APA PARAMS??");
     if (this.$route.params.id == undefined) {
       this.$emit("change-to-new");
       if (this.mode == "new") {
@@ -130,7 +130,7 @@ export default {
       formData.append("stock", this.stock);
       formData.append("price", this.price);
       formData.append("image", this.image);
-      console.log(formData, "ini form data");
+      // console.log(formData, "ini form data");
       this.axios
         .post(`products`, formData, {
           headers: {
@@ -147,7 +147,7 @@ export default {
           this.description = "";
         })
         .catch(function(err, textStatus) {
-          console.log(err);
+          // console.log(err);
           this.$swal({
             text: "Something is wrong",
             icon: "warning",
@@ -156,7 +156,7 @@ export default {
         });
     },
     populateData(id) {
-      console.log("DAPET ID  GAK", id);
+      // console.log("DAPET ID  GAK", id);
       // console.log(this.$routes.params.id, 'DAPET GA YG BWH')
       this.axios
         .get(`products/${id}`)
@@ -169,7 +169,7 @@ export default {
           this.description = data.description;
         })
         .catch(err => {
-          console.log(err, "///");
+          // console.log(err, "///");
 
           this.$swal("Something is wrong", "warning");
         });

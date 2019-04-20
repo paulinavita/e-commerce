@@ -99,12 +99,12 @@
         { type : 'inc' },
         { headers : {token : localStorage.getItem('token'), cartId : idCart} })
         .then(({data}) => {
-          console.log(data);
+          // console.log(data);
           this.$emit('inc-qty')
           this.changeStockWarning(data.amount, data.productId.stock) 
         })
         .catch(err => {
-          console.log(err);
+          this.$swal('Something is wrong')
         })
       },
       subsQty(idCart) {
@@ -112,12 +112,12 @@
         { type : 'dec' },
         { headers : {token : localStorage.getItem('token'), cartId : idCart} })
         .then(({data}) => {
-          console.log(data);
+          // console.log(data);
           this.$emit('dec-qty')
           this.changeStockWarning(data.amount, data.productId.stock) 
         })
         .catch(err => {
-          console.log(err);
+          this.$swal('Something is wrong')
         })
       },
       isDisable(amt) {
@@ -143,12 +143,12 @@
             }
           })
         .then(({data}) => {
-          console.log((data), 'apakah sudah hilang?');
+          // console.log((data), 'apakah sudah hilang?');
           this.$emit('delete-whole-card', cartId)
         })
         .catch(err => {
-          console.log(err.response, '//');
-          
+          // console.log(err.response, '//');
+
           this.$swal('Something is wrong', 'warning')
         })
       },
@@ -162,7 +162,7 @@
               }
           }) 
           .then(({data}) => {
-            console.log(data, 'dapet apa????');
+            // console.log(data, 'dapet apa????');
             this.$swal('Thank you for shopping with us!', 'warning')
             this.$emit('after-checkout')
   

@@ -16,7 +16,7 @@
             <v-icon right>face</v-icon>
           </v-btn>
         </router-link>
-        <router-link to="/users">
+        <router-link  to="/users">
           <v-btn v-if="!isLogin" flat color="grey">
             <span>Register</span>
             <v-icon right>gesture</v-icon>
@@ -65,6 +65,7 @@
        @success-login="successLogin"
        @inc-qty="getCartAmount"
        @dec-qty="getCartAmount"
+       @add-new-product-fetch="getCartAmount"
        @delete-whole-card="getCartAmount"
        @after-checkout="getCartAmount"
        :searchData="search"
@@ -75,7 +76,7 @@
 
     <!-- START ON FOOTER -->
     <template>
-      <v-footer white height="auto">
+      <v-footer white height="50px">
         <v-card class="flex" flat tile>
           <v-card-actions class="white justify-center">
             &copy;2019 —
@@ -172,4 +173,7 @@ span {
   text-decoration: none;
 }
 
+router-link {
+  text-decoration: none  !important;
+}
 </style>

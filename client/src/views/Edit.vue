@@ -14,7 +14,7 @@
           <td>{{ props.item.name }}</td>
           <td class="text-xs-center">{{ props.item.price }}</td>
           <td class="text-xs-center">{{ props.item.stock }}</td>
-          <td class="text-xs-center">{{ props.item.description }}</td>
+          <td class="text-xs-center">{{truncateText(props.item.description)}}</td>
           <td class="text-xs-center"><img style="width:55px;height:auto;" v-bind:src="props.item.image"/></td>
           <td class="text-xs-center"><router-link style="text-decoration: none;" :to="{name: 'editById', params :{id : props.item._id} }"><v-btn flat color="success">Edit</v-btn></router-link></td>
           <td class="text-xs-center"><v-btn flat @click="deleteProduct(props.item._id)" color="success">Delete</v-btn></td>
@@ -60,6 +60,13 @@ export default {
     methods: {
         deleteProduct(toDeleteId) {
             this.$emit('delete-product', toDeleteId)   
+        },
+        truncateText(text) {
+          if (text.length > 70) {
+            return text.substring(0,70) + '...'
+          } else return {
+            text
+          }
         }
     },
 }

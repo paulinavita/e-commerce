@@ -9,7 +9,7 @@ import EditForm from './views/EditForm'
 import Edit from './views/Edit'
 import Login from './views/Login'
 import Register from './views/Register'
-
+import Transactions from './components/Transactions'
 
 Vue.use(Router)
 
@@ -48,7 +48,7 @@ let router = new Router({
     {
       path: '/secret',
       name: 'secret',
-      component: Admin,
+      component: Admin, Transactions,
       meta: {
         requiresAuth: true,
         is_admin: true

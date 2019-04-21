@@ -26,7 +26,8 @@ class ProductController {
             // console.log(foundProduct, 'apakah dapat produk tsb');
             // console.log('====================-=', foundProduct.stock, '///////' ,amount);
             foundProduct.stock -= +amount
-            foundProduct.save
+            return foundProduct.save()
+            
         })
         .catch(err => {
             res.status(400).json(err)

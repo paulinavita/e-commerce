@@ -19,12 +19,13 @@
           </v-card-text>
         </v-card>
       </v-flex>
-
+      <Transactions v-if="this.$route.name == 'secret'" :datatrans="listTrans"/>
       <v-flex d-flex lg9>
         <router-view
         @change-to-edit="changeToEdit"
         @change-to-add="changeToAdd"
         @delete-product="deleteProduct"
+         :datatrans="listTrans"
         :arrProducts="arrProducts" ></router-view>
       </v-flex>
     </v-layout>
@@ -34,14 +35,16 @@
 
 <script>
 import Edit from "./Edit.vue";
+import Transactions from "../components/Transactions.vue"
 export default {
   
-  components: { Edit },
+  components: { Edit, Transactions },
   data() {
     return {
       mode : 'new',
       isLogin: false,
       arrProducts: [],
+      listTrans : [],
       headers: [
         {
           text: "Product Name",
@@ -64,7 +67,10 @@ export default {
     }
   },
   created() {
+    console.log(this.$route);
+    
     this.getAllProducts();
+    this.fetchTrans()
   },
   methods: {
     getAllProducts() {
@@ -105,6 +111,21 @@ export default {
           swal("Action cancelled. Product still on the sell");
         }
       });
+    },
+    fetchTrans() {
+      this.axios
+        .get(`transactions`, {
+          headers: { token: localStorage.getItem("token") }
+        })
+        .then(({ data }) => {
+          // console.log(data, "DAPAT APA??");
+          this.listTrans = data;
+          console.log(this.listTrans, '////');
+          
+        })
+        .catch(err => {
+          console.log(err.response);
+        });
     },
     changeToAdd() {
       this.mode = 'new'

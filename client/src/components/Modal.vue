@@ -82,7 +82,8 @@ export default {
       })
       .then(({data}) => {
         this.$swal("Added to cart", "success");
-        console.log(data, 'dapet apa ya');  
+        this.$emit('add-new-product-fetch')
+        // console.log(data, 'dapet apa ya');  
       })
       .catch(err => {
         console.log(err);

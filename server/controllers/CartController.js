@@ -2,7 +2,8 @@ const User = require('../models/user')
 const Cart = require('../models/cart')
 const Product = require('../models/product')
 const deductStock = require('../controllers/ProductController').deductStock
-console.log(deductStock, '/////')
+// console.log(deductStock, '/////')
+const Transaction = require('../models/transaction')
 class CartController {
 
     static findOne(req, res) {
@@ -21,39 +22,31 @@ class CartController {
         })
     }
 
-    
-    // static createCart (req, res) {
-    //     // console.log(req.body, 'dapet da di create');
-        
-    //     console.log('masuk', req.authenticatedUser.id, req.body.productId);
-    //     Cart.create({
-    //         userId : req.authenticatedUser.id,
-    //         amount : req.body.amount,
-    //         productId : req.body.productId
-    //     })    
-    //     .then(created => {
-    //         // console.log('emag kebuat??', created);
-    //         req.headers.cartId = created._id
-    //         // console.log(req.headers.cartId, 'KEBUAT GAK HEADERSNYA');     
-    //         res.status(201).json(created)})
-    //     .catch(err => {
-    //         console.log('err bag addtocart', err);
-    //         res.status(400).json(err)})
-    // }
-
+    // [
+    //     {
+    //      productId : {
+    //          type : Schema.Types.ObjectId,
+    //          ref : 'Product'
+    //          }
+    //      }
+    //  ]
     static checkoutDelete(req,res) {
+        let prodToPopulate = []
         Cart.find({userId : req.authenticatedUser.id})
         .then((arrFound) => {
             console.log(arrFound ,'/////');
-            
             let updateProduct = async function(id, amount) {
                 await deductStock(id, amount)
             }
             arrFound.forEach(e => {
-                console.log(e, 'ELEMENNNNNN');
-                
+                prodToPopulate.push({productId : e.productId})
                 return updateProduct(e.productId, e.amount)
             })
+        })
+        .then(() => {
+            // console.log(req.body.total, 'BERAPA HARGA NYA');
+            // console.log('MASUK BIKIN TRANSAKSI');     
+            return Transaction.create({userId : req.authenticatedUser.id, carts : prodToPopulate, total : req.body.total})
         })
         .then(() => {
             Cart.deleteMany({userId : req.authenticatedUser.id})
@@ -61,10 +54,14 @@ class CartController {
                 res.status(200).json(details)
             })
             .catch(err => {
+                console.log(err,'ats');
+
                 res.status(400).json(err)
             })
         })
         .catch(err => {
+            console.log(err,'bwh');
+            
             res.status(400).json(err)
         })
     }
@@ -119,12 +116,6 @@ class CartController {
                 res.status(400).json(err)})
         }
     }
-    // static updateCart(req,res) {
-    //     Cart.findOneAndUpdate({_id : req.params.id}, {amount : req.body.amount,  productId : req.body.productId }, {new : true})
-    //     .then(found => {found ? res.status(200).json(found) : res.status(404).json({message : 'Cart not found'})})
-    //     .catch(err => {
-    //         console.log(err, 'bag update');
-    //         res.status(400).json(err)})
 }
     
 

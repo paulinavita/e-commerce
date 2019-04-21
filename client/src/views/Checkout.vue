@@ -156,7 +156,7 @@
         if (this.sumPrice == 0) {
           this.$swal("You haven't bought anything from us yet ):")
         } else {
-          this.axios.delete(`carts/checkout`, {
+          this.axios.post(`carts/checkout`, {total : this.getTotalCart}, {
               headers: {
                 'token': localStorage.getItem('token')
               }
@@ -168,6 +168,7 @@
   
           })
           .catch(err => {
+            console.log(err.response);
               this.$swal('Something is wrong', 'warning')
           })    
         }

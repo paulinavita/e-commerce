@@ -7,7 +7,7 @@ const Transaction = require('../models/transaction')
 class CartController {
 
     static findOne(req, res) {
-        console.log('masuk 1');
+        // console.log('masuk 1');
         
         Cart.find({userId : req.authenticatedUser.id})
         .populate('productId')

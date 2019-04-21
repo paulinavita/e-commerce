@@ -168,7 +168,7 @@
   
           })
           .catch(err => {
-            console.log(err.response);
+            // console.log(err.response);
               this.$swal('Something is wrong', 'warning')
           })    
         }

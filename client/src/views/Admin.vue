@@ -67,7 +67,7 @@ export default {
     }
   },
   created() {
-    console.log(this.$route);
+    // console.log(this.$route);
     
     this.getAllProducts();
     this.fetchTrans()
@@ -105,10 +105,10 @@ export default {
               this.getAllProducts()
             })
             .catch(err => {
-              swal("Something is wrong", 'warning');
+              this.$swal("Something is wrong", 'warning');
             });
         } else {
-          swal("Action cancelled. Product still on the sell");
+          this.$swal("Action cancelled. Product still on the sell");
         }
       });
     },
@@ -120,11 +120,12 @@ export default {
         .then(({ data }) => {
           // console.log(data, "DAPAT APA??");
           this.listTrans = data;
-          console.log(this.listTrans, '////');
+          // console.log(this.listTrans, '////');
           
         })
         .catch(err => {
-          console.log(err.response);
+          this.$swal("Something is wrong", 'warning');
+          // console.log(err.response);
         });
     },
     changeToAdd() {

@@ -3,6 +3,8 @@ let allProducts;
 class ProductController {
 
     static create (req,res) {
+        // console.log(req.body, '????????');
+        
         let url = req.file ? req.file.cloudStoragePublicUrl : '';
         // let url = req.file.cloudStoragePublicUrl  
         Product.create({

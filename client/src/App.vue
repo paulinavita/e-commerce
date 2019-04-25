@@ -32,13 +32,13 @@
         </router-link>
           <v-spacer></v-spacer>
         <v-flex xs12 sm6 md3>
-          <v-text-field height=25 prepend-icon="search" v-if="isLogin"  v-model="search" label="Search"></v-text-field>
+          <v-text-field light width=10 height=20 prepend-icon="search" v-if="isLogin"  v-model="search" label="Search"></v-text-field>
         </v-flex>
-        
+            <v-spacer></v-spacer>
+
         <v-badge v-if="isLogin" left>
       <template v-slot:badge>
         <span>{{totalProductsOnCart}}</span>
-        <span>On Cart</span>
       </template>
       <v-icon color="grey lighten-1"> shopping_cart </v-icon>
     </v-badge>
@@ -68,6 +68,7 @@
        @add-new-product-fetch="getCartAmount"
        @delete-whole-card="getCartAmount"
        @after-checkout="getCartAmount"
+       @addNewProductFetch='addNewProductFetch'
        :searchData="search"
        :cartItems="cartItems"
        ></router-view>
@@ -113,16 +114,30 @@ export default {
   },
   methods: {
     successRegister() {
+      this.$swal({
+        title: "Please login to proceed",
+        icon: "success",
+      }); 
       this.$router.push({ path: "/signin/local" });
     },
     successLogin() {
       this.$router.push({ path: "/" });
       this.role = localStorage.getItem('role')
+      this.$swal({
+        title: "We have so much to offer!",
+        text: "Check out our store page",
+        icon: "success",
+      }); 
       this.isLogin = true;
     },
     signOut() {
       localStorage.clear();
       this.isLogin = false;
+      this.$swal({
+        title: "Thank you for checking our store",
+        text: "See you",
+        icon: "success",
+      });      
       this.$router.push({ path: "/" });
     },
     getProducts() {
@@ -163,6 +178,9 @@ export default {
           .replace('.', ',')
           .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
       )
+    },
+    addNewProductFetch() {
+      this.getCartAmount()
     }
   }
 };

@@ -42,7 +42,7 @@
           <v-btn :disabled="isDisable()" @click="addQty" flat icon color="pink">
             <v-icon>keyboard_arrow_up</v-icon>
           </v-btn>
-          <v-btn color="primary" flat @click="addToCart('_id')">Add To Cart</v-btn>
+          <v-btn color="primary" flat @click="addToCart(total)">Add To Cart</v-btn>
              <v-spacer></v-spacer>
 
             <v-btn color="primary" flat @click="dialog = false">Close</v-btn>
@@ -81,8 +81,8 @@ export default {
       }
       })
       .then(({data}) => {
-        this.$swal("Added to cart", "success");
-        this.$emit('add-new-product-fetch')
+        this.$swal("Added to cart");
+        this.$emit('addNewProductFetch')
         // console.log(data, 'dapet apa ya');  
       })
       .catch(err => {

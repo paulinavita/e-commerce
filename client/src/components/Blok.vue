@@ -41,7 +41,7 @@
           v-bind:price="price"
           v-bind:image="image"
           v-bind:_id="_id"
-
+          v-on:addNewProductFetch="addNewProductFetch"
           ></popup>
         </v-card-actions>
       </v-card>
@@ -68,6 +68,9 @@ export default {
   methods: {
     addToCart() {
       // this.$emit('add-to-cart')
+    },
+    addNewProductFetch() {
+      this.$emit('addNewProductFetch')
     }
   },
 }

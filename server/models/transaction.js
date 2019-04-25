@@ -15,7 +15,8 @@ const transactionSchema = new Schema({
         }
     ],
    total : {
-       type : Number
+       type : Number,
+       min : [1, 'Total(price) cannot be less than 1']
    },
    createdAt : {
        type : Date,

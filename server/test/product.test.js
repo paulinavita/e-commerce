@@ -57,8 +57,6 @@ describe('Product end point test', function () {
             done()
             
         })
-    
-    
     })
 
     describe('User Sign in',  function() {

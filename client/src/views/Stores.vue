@@ -10,6 +10,7 @@
         v-bind:stock="product.stock"
         v-bind:image="product.image"
         v-bind:_id="product._id"
+        @addNewProductFetch='addNewProductFetch'
       />
    </v-layout>
   </v-container>
@@ -48,6 +49,9 @@ export default {
             this.$swal('Something is wrong', '', 'error')
         })
     },
+    addNewProductFetch() {
+      this.$emit('addNewProductFetch')
+    }
   },
 }
 </script>

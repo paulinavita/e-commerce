@@ -10,17 +10,16 @@ app.use(cors())
 
 // Run this database UNDER TESTING MODE
 //========================== FOR TESTING PURPOSE =========================//
-
-let localurl = process.env.MONGO_LOCAL_TEST_URL
-mongoose.connect(localurl, {
-        useNewUrlParser: true
-    })
-    .then(() => {
-        console.log('====Mongo LOCAL Connected====');
-    })
-    .catch(err => {
-        console.log(err);
-    })
+// let localurl = process.env.MONGO_LOCAL_TEST_URL
+// mongoose.connect(localurl, {
+//         useNewUrlParser: true
+//     })
+//     .then(() => {
+//         console.log('====Mongo LOCAL Connected====');
+//     })
+//     .catch(err => {
+//         console.log(err);
+//     })
 
 
 // Run this database TO VIEW THE APPLICATION
